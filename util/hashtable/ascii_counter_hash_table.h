@@ -1,0 +1,6 @@
+#ifndef ASCII_COUNTER_HASH_TABLE_H
+#define COUNTER_HASH_TABLE_H
+
+#define ASCII_TABLE_SIZE 256
+
+#endif
