@@ -2,17 +2,17 @@
 #define QUEUE_H
 
 /**
- * Struct and alias for the queue node.
+ * Queue node alias.
  */
 typedef struct _queue_node queue_node_t;
 
 /**
- * Struct and alias for the queue.
+ * Queue alias.
  */
 typedef struct _queue queue_t;
 
 /**
- * Struct and alias for the queue node.
+ * Queue node struct.
  */
 struct _queue_node {
     void *data;
@@ -21,7 +21,7 @@ struct _queue_node {
 };
 
 /**
- * Struct and alias for the queue.
+ * Queue struct.
  */
  struct _queue {
     queue_node_t *head;
