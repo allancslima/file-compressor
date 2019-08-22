@@ -11,7 +11,6 @@ hash_table_t* hashtable_create(int capacity, size_t data_type_size)
 {
     int *new_table = (int*) calloc(capacity, sizeof(int) * capacity);
 	hash_table_t *new_hash_table = (hash_table_t*) malloc(sizeof(hash_table_t));
-
 	new_hash_table->capacity = capacity;
 	new_hash_table->table = new_table;
 

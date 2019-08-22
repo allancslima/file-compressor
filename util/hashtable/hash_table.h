@@ -7,7 +7,7 @@
 typedef struct _hash_table hash_table_t;
 
 /**
- * Allocates memory block to an empty {@link hashtable_it}.
+ * Allocates memory to an empty {@link hash_table_t}.
  *
  * @param capacity initial capacity of the hash table.
  * @param data_type_size data type size of hash table values.
