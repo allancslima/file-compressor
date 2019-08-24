@@ -3,6 +3,10 @@
 
 #include "queue.h"
 
+/**
+ * The sort enumerator to queue items according a specified priority.
+ * ASC to ascending order and DESC to descending order.
+ */
 typedef enum order { ASC, DESC } ORDER;
 
 /**
