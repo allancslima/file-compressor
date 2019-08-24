@@ -2,12 +2,6 @@
 #include <stdlib.h>
 #include "priority_queue.h"
 
-struct _queue_node {
-    void *data;
-    int priority;
-    queue_node_t *next;
-};
-
 struct _queue {
     queue_node_t *head;
     queue_node_t *tail;
@@ -33,6 +27,29 @@ void priorityqueue_enqueue(queue_t *queue, void *data, int priority, ORDER order
     }
     if (new_node->next == NULL) {
         queue->tail = new_node;
+    }
+}
+
+queue_node_t* priorityqueue_dequeue(queue_t *queue)
+{
+    if (queue_is_empty(queue)) {
+        return NULL;
+    }
+    queue_node_t *dequeued = queue->head;
+    queue->head = dequeued->next;
+    if (queue_is_empty(queue)) {
+        queue->tail = NULL;
+    }
+    dequeued->next = NULL;
+    return dequeued;
+}
+
+void priorityqueue_iterate(queue_t *queue, void (*block)(void *data, int priority))
+{
+    queue_node_t *node = queue->head;
+    while (node != NULL) {
+        block(node->data, node->priority);
+        node = node->next;
     }
 }
 
