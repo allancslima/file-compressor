@@ -26,7 +26,7 @@ typedef enum order { ASC, DESC } ORDER;
  * @param priority integer value, a lower value means lower priority and a bigger value means bigger priority.
  * If the priority already exists in the queue, the last added data gets bigger priority.
  */
-void priorityqueue_enqueue(queue_t *queue, void *data, int priority, ORDER order);
+void priority_queue_enqueue(queue_t *queue, void *data, int priority, ORDER order);
 
 /**
  * Removes node from begin of the queue.
@@ -34,7 +34,7 @@ void priorityqueue_enqueue(queue_t *queue, void *data, int priority, ORDER order
  * @param queue queue to do the operation.
  * @return pointer to the node removed from begin of the queue. The @{link _queue_node#next} field point to NULL.
  */
-queue_node_t* priorityqueue_dequeue(queue_t *queue);
+queue_node_t* priority_queue_dequeue(queue_t *queue);
 
 /**
  * Traverses the queue returning the data and the priority.
@@ -42,6 +42,6 @@ queue_node_t* priorityqueue_dequeue(queue_t *queue);
  * @param queue where to do the operation.
  * @param block pointer to function that receives the data and the priority of the queue node.
  */
-void priorityqueue_iterate(queue_t *queue, void (*block)(void *data, int priority));
+void priority_queue_iterate(queue_t *queue, void (*block)(void *data, int priority));
 
 #endif

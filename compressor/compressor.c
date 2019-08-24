@@ -44,7 +44,7 @@ queue_t* order_chars_count(hashtable_t *hashtable)
         int *data = (int*) malloc(sizeof(int));
         int priority = *((int*) value);
         *data = key;
-        priorityqueue_enqueue(priority_queue, data, priority, ASC);
+        priority_queue_enqueue(priority_queue, data, priority, ASC);
     }
 
     hashtable_iterate(hashtable, block);

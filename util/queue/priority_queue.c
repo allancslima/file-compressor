@@ -9,7 +9,7 @@ struct _queue {
 
 int should_swap_nodes(queue_node_t *node1, queue_node_t *node2, ORDER order);
 
-void priorityqueue_enqueue(queue_t *queue, void *data, int priority, ORDER order)
+void priority_queue_enqueue(queue_t *queue, void *data, int priority, ORDER order)
 {
     queue_node_t *new_node = queuenode_create(data);
     new_node->priority = priority;
@@ -30,7 +30,7 @@ void priorityqueue_enqueue(queue_t *queue, void *data, int priority, ORDER order
     }
 }
 
-queue_node_t* priorityqueue_dequeue(queue_t *queue)
+queue_node_t* priority_queue_dequeue(queue_t *queue)
 {
     if (queue_is_empty(queue)) {
         return NULL;
@@ -44,7 +44,7 @@ queue_node_t* priorityqueue_dequeue(queue_t *queue)
     return dequeued;
 }
 
-void priorityqueue_iterate(queue_t *queue, void (*block)(void *data, int priority))
+void priority_queue_iterate(queue_t *queue, void (*block)(void *data, int priority))
 {
     queue_node_t *node = queue->head;
     while (node != NULL) {
