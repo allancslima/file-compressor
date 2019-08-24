@@ -1,41 +1,41 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "compressor.h"
-#include "../util/hashtable/hash_table.h"
+#include "../util/hashtable/hashtable.h"
 #include "../util/queue/priority_queue.h"
 
 #define ASCII_TABLE_SIZE 256
 
-hash_table_t* count_file_chars(FILE *file);
+hashtable_t* count_file_chars(FILE *file);
 
-queue_t* order_chars_count(hash_table_t *hash_table);
+queue_t* order_chars_count(hashtable_t *hashtable);
 
 int compress_file(char *file_path)
 {
 	FILE *file = fopen(file_path, "rb");
-	hash_table_t *char_count_set = count_file_chars(file);
-	queue_t *priority_queue = order_chars_count(char_count_set);
+	hashtable_t *chars_frequency_hashtable = count_file_chars(file);
+	queue_t *chars_frequency_queue = order_chars_count(chars_frequency_hashtable);
 	return 1;
 }
 
-hash_table_t* count_file_chars(FILE *file)
+hashtable_t* count_file_chars(FILE *file)
 {
     if (file == NULL) {
         return NULL;
     }
-    hash_table_t *hash_table = hashtable_create(ASCII_TABLE_SIZE, sizeof(int));
+    hashtable_t *hashtable = hashtable_create(ASCII_TABLE_SIZE, sizeof(int));
     unsigned char c;
     int sum = 1;
 
     while (fscanf(file, "%c", &c) != EOF) {
-        hashtable_put(hash_table, c, &sum);
+        hashtable_put(hashtable, c, &sum);
     }
-    return hash_table;
+    return hashtable;
 }
 
-queue_t* order_chars_count(hash_table_t *hash_table)
+queue_t* order_chars_count(hashtable_t *hashtable)
 {
-    if (hash_table == NULL) {
+    if (hashtable == NULL) {
         return NULL;
     }
     queue_t *priority_queue = queue_create();
@@ -47,6 +47,6 @@ queue_t* order_chars_count(hash_table_t *hash_table)
         priorityqueue_enqueue(priority_queue, data, priority, ASC);
     }
 
-    hashtable_iterate(hash_table, block);
+    hashtable_iterate(hashtable, block);
     return priority_queue;
 }
