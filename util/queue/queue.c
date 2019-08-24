@@ -2,6 +2,17 @@
 #include <stdlib.h>
 #include "queue.h"
 
+struct _queue_node {
+    void *data;
+    int priority;
+    queue_node_t *next;
+};
+
+struct _queue {
+    queue_node_t *head;
+    queue_node_t *tail;
+};
+
 queue_t *queue_create()
 {
     queue_t *new_queue = (queue_t*) malloc(sizeof(queue_t));

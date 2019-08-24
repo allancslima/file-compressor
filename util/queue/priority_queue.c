@@ -2,6 +2,17 @@
 #include <stdlib.h>
 #include "priority_queue.h"
 
+struct _queue_node {
+    void *data;
+    int priority;
+    queue_node_t *next;
+};
+
+struct _queue {
+    queue_node_t *head;
+    queue_node_t *tail;
+};
+
 int should_swap_nodes(queue_node_t *node1, queue_node_t *node2, ORDER order);
 
 void priorityqueue_enqueue(queue_t *queue, void *data, int priority, ORDER order)

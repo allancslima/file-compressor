@@ -12,24 +12,7 @@ typedef struct _queue_node queue_node_t;
 typedef struct _queue queue_t;
 
 /**
- * Queue node struct.
- */
-struct _queue_node {
-    void *data;
-    int priority;
-    queue_node_t *next;
-};
-
-/**
- * Queue struct.
- */
- struct _queue {
-    queue_node_t *head;
-    queue_node_t *tail;
-};
-
-/**
- * Allocates memory to an empty queue.queue_node_t
+ * Allocates memory to an empty queue.
  *
  * @return pointer to {@link queue_t}.
  */
