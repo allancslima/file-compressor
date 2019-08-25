@@ -6,14 +6,14 @@
 
 hashtable_t* create_frequency_hashtable(FILE *file);
 
-queue_t* create_leafs_priority_queue(hashtable_t *frequency_hashtable);
+queue_t* create_leaves_priority_queue(hashtable_t *frequency_hashtable);
 
 frequency_node_t* create_frequency_node(unsigned char c, int frequency);
 
 binary_tree_t* make_frequency_tree_from_file(FILE *file)
 {
     hashtable_t *frequency_hashtable = create_frequency_hashtable(file);
-    queue_t *tree_priority_queue = create_leafs_priority_queue(frequency_hashtable);
+    queue_t *tree_priority_queue = create_leaves_priority_queue(frequency_hashtable);
 
     if (queue_is_empty(tree_priority_queue)) {
         return NULL;
@@ -48,7 +48,7 @@ hashtable_t* create_frequency_hashtable(FILE *file)
     return hashtable;
 }
 
-queue_t* create_leafs_priority_queue(hashtable_t *frequency_hashtable)
+queue_t* create_leaves_priority_queue(hashtable_t *frequency_hashtable)
 {
     if (frequency_hashtable == NULL) {
         return NULL;
@@ -56,7 +56,7 @@ queue_t* create_leafs_priority_queue(hashtable_t *frequency_hashtable)
     queue_t *priority_queue = queue_create();
 
     void block(int key, void *value) {
-        char c = key;
+        unsigned char c = key;
         int priority = *((int*) value);
         frequency_node_t *frequency_node = create_frequency_node(c, priority);
         binary_tree_t *leaf = binary_tree_create(frequency_node, NULL, NULL);
