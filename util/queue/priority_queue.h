@@ -24,7 +24,7 @@ typedef enum order { ASC, DESC } ORDER;
  * @param queue queue to do the operation.
  * @param data pointer to the data that will be putted at end of the queue.
  * @param priority integer value, a lower value means lower priority and a bigger value means bigger priority.
- * If the priority already exists in the queue, the last added data gets bigger priority.
+ * If the priority already exists in the queue, the new data gets bigger priority.
  */
 void priority_queue_enqueue(queue_t *queue, void *data, int priority, ORDER order);
 

@@ -9,6 +9,7 @@ struct _queue_node {
 };
 
 struct _queue {
+    int size;
     queue_node_t *head;
     queue_node_t *tail;
 };
@@ -16,13 +17,14 @@ struct _queue {
 queue_t *queue_create()
 {
     queue_t *new_queue = (queue_t*) malloc(sizeof(queue_t));
+    new_queue->size = 0;
     new_queue->head = NULL;
     new_queue->tail = NULL;
 
     return new_queue;
 }
 
-queue_node_t *queuenode_create(void *data)
+queue_node_t* queue_node_create(void *data)
 {
     queue_node_t *new_node = (queue_node_t*) malloc(sizeof(queue_node_t));
     new_node->data = data;
@@ -34,7 +36,7 @@ queue_node_t *queuenode_create(void *data)
 
 void queue_enqueue(queue_t *queue, void *data)
 {
-    queue_node_t *new_node = queuenode_create(data);
+    queue_node_t *new_node = queue_node_create(data);
 
     if (queue_is_empty(queue)) {
         queue->head = new_node;
@@ -43,6 +45,7 @@ void queue_enqueue(queue_t *queue, void *data)
         queue->tail->next = new_node;
         queue->tail = new_node;
     }
+    queue->size++;
 }
 
 void* queue_dequeue(queue_t *queue)
@@ -57,13 +60,19 @@ void* queue_dequeue(queue_t *queue)
     if (queue_is_empty(queue)) {
         queue->tail = NULL;
     }
+    queue->size--;
     free(dequeued);
     return dequeued_data;
 }
 
 int queue_is_empty(queue_t *queue)
 {
-    return queue->head == NULL;
+    return size(queue) == 0;
+}
+
+int size(queue_t *queue)
+{
+    return queue->size;
 }
 
 void queue_iterate(queue_t *queue, void (*block)(void *data))

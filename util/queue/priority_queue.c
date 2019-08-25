@@ -3,22 +3,26 @@
 #include "priority_queue.h"
 
 struct _queue {
+    int size;
     queue_node_t *head;
     queue_node_t *tail;
 };
 
 int should_swap_nodes(queue_node_t *node1, queue_node_t *node2, ORDER order);
 
+int should_swap_nodes_at_beginning(queue_node_t *node1, queue_node_t *node2, ORDER order);
+
 void priority_queue_enqueue(queue_t *queue, void *data, int priority, ORDER order)
 {
-    queue_node_t *new_node = queuenode_create(data);
+    queue_node_t *new_node = queue_node_create(data);
     new_node->priority = priority;
 
-    if (queue_is_empty(queue) || should_swap_nodes(queue->head, new_node, order)) {
+    if (queue_is_empty(queue) || should_swap_nodes_at_beginning(new_node, queue->head, order)) {
         new_node->next = queue->head;
         queue->head = new_node;
     } else {
         queue_node_t *node = queue->head;
+
         while (node->next != NULL && should_swap_nodes(new_node, node->next, order)) {
             node = node->next;
         }
@@ -28,6 +32,7 @@ void priority_queue_enqueue(queue_t *queue, void *data, int priority, ORDER orde
     if (new_node->next == NULL) {
         queue->tail = new_node;
     }
+    queue->size++;
 }
 
 queue_node_t* priority_queue_dequeue(queue_t *queue)
@@ -40,6 +45,7 @@ queue_node_t* priority_queue_dequeue(queue_t *queue)
     if (queue_is_empty(queue)) {
         queue->tail = NULL;
     }
+    queue->size--;
     dequeued->next = NULL;
     return dequeued;
 }
@@ -58,5 +64,13 @@ int should_swap_nodes(queue_node_t *node1, queue_node_t *node2, ORDER order)
     int priority1 = node1->priority;
     int priority2 = node2->priority;
 
-    return (order == ASC && priority1 >= priority2) || (order == DESC && priority1 <= priority2);
+    return (order == ASC && priority1 > priority2) || (order == DESC && priority1 < priority2);
+}
+
+int should_swap_nodes_at_beginning(queue_node_t *node1, queue_node_t *node2, ORDER order)
+{
+    int priority1 = node1->priority;
+    int priority2 = node2->priority;
+
+    return (order == ASC && priority1 <= priority2) || (order == DESC && priority1 >= priority2);
 }
