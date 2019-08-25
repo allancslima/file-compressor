@@ -2,6 +2,7 @@
 #define HUFFMAN_H
 
 #include "../util/tree/binary_tree.h"
+#include "../util/hashtable/hashtable.h"
 
 #define ASCII_TABLE_SIZE 256
 
@@ -13,13 +14,13 @@
 /**
  * Frequency node alias.
  */
-typedef struct _frequency_node frequency_node_t;
+typedef struct _symbol_frequency symbol_frequency_t;
 
 /**
  * Frequency node struct to use as binary tree data.
  */
-struct _frequency_node {
-    unsigned char value;
+struct _symbol_frequency {
+    unsigned char symbol;
     int frequency;
 };
 
@@ -31,6 +32,6 @@ struct _frequency_node {
  *
  * @see https://en.wikipedia.org/wiki/Huffman_coding#Compression
  */
-binary_tree_t* make_frequency_tree_from_file(FILE *file);
+binary_tree_t* make_symbol_frequency_tree(FILE *file);
 
 #endif

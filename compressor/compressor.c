@@ -6,20 +6,13 @@
 int compress_file(char *file_path)
 {
 	FILE *file = fopen(file_path, "rb");
-	binary_tree_t *frequency_tree = make_frequency_tree_from_file(file);
+	binary_tree_t *frequency_tree = make_symbol_frequency_tree(file);
 
 	void block(void *data) {
-	    frequency_node_t *node = (frequency_node_t*) data;
-	    printf("%c %d\n", node->value, node->frequency);
+        symbol_frequency_t *node = (symbol_frequency_t*) data;
+	    printf("%c %d\n", node->symbol, node->frequency);
 	}
 	binary_tree_pre_order(frequency_tree, block);
 
 	return 1;
-}
-
-int main()
-{
-    char *path = "test.txt";
-    compress_file(path);
-    return 0;
 }
