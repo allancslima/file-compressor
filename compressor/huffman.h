@@ -16,12 +16,19 @@
  */
 typedef struct _symbol_frequency symbol_frequency_t;
 
+typedef struct _symbol_bits symbol_bits_t;
+
 /**
  * Frequency node struct to use as binary tree data.
  */
 struct _symbol_frequency {
     unsigned char symbol;
     int frequency;
+};
+
+struct _symbol_bits {
+    unsigned char symbol;
+    char *bits;
 };
 
 /**
@@ -33,5 +40,7 @@ struct _symbol_frequency {
  * @see https://en.wikipedia.org/wiki/Huffman_coding#Compression
  */
 binary_tree_t* make_symbol_frequency_tree(FILE *file);
+
+hashtable_t* make_symbol_bits_map(binary_tree_t *symbol_frequency_tree);
 
 #endif

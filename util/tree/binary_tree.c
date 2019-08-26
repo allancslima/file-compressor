@@ -12,6 +12,11 @@ binary_tree_t* binary_tree_create(void *data, binary_tree_t *left, binary_tree_t
     return binary_tree;
 }
 
+int is_leaf(binary_tree_t *binary_tree)
+{
+    return binary_tree != NULL && binary_tree->left == NULL && binary_tree->right == NULL;
+}
+
 void binary_tree_in_order(binary_tree_t *binary_tree, void (*block)(void *data))
 {
     if (binary_tree != NULL) {
