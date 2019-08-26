@@ -108,12 +108,7 @@ void find_bit_paths(
     if (direction == ROOT) {
         traversal_bits = (char*) malloc(sizeof(char));
         traversal_bits[0] = '\0';
-
         find_bit_paths(symbol_frequency_tree->left, LEFT, traversal_bits, block);
-
-        traversal_bits = (char*) realloc(traversal_bits, sizeof(char));
-        traversal_bits[0] = '\0';
-
         find_bit_paths(symbol_frequency_tree->right, RIGHT, traversal_bits, block);
     } else {
         int new_length = strlen(traversal_bits) + 2;
@@ -131,6 +126,7 @@ void find_bit_paths(
             find_bit_paths(symbol_frequency_tree->left, LEFT, traversal_bits, block);
             find_bit_paths(symbol_frequency_tree->right, RIGHT, traversal_bits, block);
         }
+        // Removing last character
         new_length = strlen(traversal_bits);
         traversal_bits = (char*) realloc(traversal_bits, sizeof(char) * new_length);
         traversal_bits[new_length - 1] = '\0';
