@@ -26,12 +26,20 @@ struct _binary_tree {
 binary_tree_t* binary_tree_create(void *data, binary_tree_t *left, binary_tree_t *right);
 
 /**
+ * Calculates the number of binary tree nodes.
+ *
+ * @param binary_tree pointer to a binary tree root.
+ * @return number of tree nodes.
+ */
+int binary_tree_size(binary_tree_t *binary_tree);
+
+/**
  * Checks if the given binary tree is a leaf, that's it don't have children nodes.
  *
  * @param binary_tree pointer to a binary tree root.
  * @return 1 if is a leaf or 0 otherwise.
  */
-int is_leaf(binary_tree_t *binary_tree);
+int binary_tree_is_leaf(binary_tree_t *binary_tree);
 
 /**
  * Traverses binary tree from a root in normal order.

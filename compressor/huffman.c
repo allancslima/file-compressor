@@ -45,6 +45,15 @@ binary_tree_t* make_symbol_frequency_tree(FILE *file)
     return priority_queue_dequeue(tree_priority_queue)->data;
 }
 
+hashtable_t* make_symbol_bits_map(binary_tree_t *symbol_frequency_tree)
+{
+    void block(char symbol, char *bit_path) {
+        printf("%c -> %s\n", symbol, bit_path);
+    }
+
+    find_bit_paths(symbol_frequency_tree, ROOT, NULL, block);
+}
+
 hashtable_t* create_symbol_frequency_map(FILE *file)
 {
     if (file == NULL) {
@@ -89,15 +98,6 @@ symbol_frequency_t* create_symbol_frequency(unsigned char symbol, int frequency)
     return symbol_frequency;
 }
 
-hashtable_t* make_symbol_bits_map(binary_tree_t *symbol_frequency_tree)
-{
-    void block(char symbol, char *bit_path) {
-        printf("%c -> %s\n", symbol, bit_path);
-    }
-
-    find_bit_paths(symbol_frequency_tree, ROOT, NULL, block);
-}
-
 void find_bit_paths(
         binary_tree_t *symbol_frequency_tree,
         BINARY_TREE_DIRECTION direction,
@@ -116,7 +116,7 @@ void find_bit_paths(
         traversal_bits[new_length - 2] = direction == LEFT ? '0' : '1';
         traversal_bits[new_length - 1] = '\0';
 
-        if (is_leaf(symbol_frequency_tree)) {
+        if (binary_tree_is_leaf(symbol_frequency_tree)) {
             char symbol = ((symbol_frequency_t*) symbol_frequency_tree->data)->symbol;
             char *copy = (char*) malloc(sizeof(char) * (strlen(traversal_bits) + 1));
 
