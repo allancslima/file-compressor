@@ -9,8 +9,10 @@ int calculate_trash_size(hashtable_t *symbol_bits_map, hashtable_t *symbol_frequ
 int compress_file(char *file_path)
 {
     hashtable_t *symbol_frequency_map = make_symbol_frequency_map(file_path);
-	binary_tree_t *symbol_frequency_tree = make_symbol_frequency_tree(symbol_frequency_map);
+    queue_t *leaves_priority_queue = make_leaves_priority_queue(symbol_frequency_map);
+    binary_tree_t *symbol_frequency_tree = make_symbol_frequency_tree(leaves_priority_queue);
     hashtable_t *symbol_bits_map = make_symbol_bits_map(symbol_frequency_tree);
+
     int trash_size = calculate_trash_size(symbol_frequency_map, symbol_bits_map);
 
     return 1;

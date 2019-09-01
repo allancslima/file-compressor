@@ -2,11 +2,8 @@
 #include <stdlib.h>
 #include <string.h>
 #include "huffman.h"
-#include "../util/queue/priority_queue.h"
 
 typedef enum binary_tree_direction { ROOT, LEFT, RIGHT } BINARY_TREE_DIRECTION;
-
-queue_t* create_leaves_priority_queue(hashtable_t *symbol_frequency_map);
 
 symbol_frequency_t* create_symbol_frequency(unsigned char symbol, int frequency);
 
@@ -34,44 +31,7 @@ hashtable_t* make_symbol_frequency_map(char *file_path)
     return hashtable;
 }
 
-binary_tree_t* make_symbol_frequency_tree(hashtable_t *symbol_frequency_map)
-{
-    queue_t *tree_priority_queue = create_leaves_priority_queue(symbol_frequency_map);
-
-    if (queue_is_empty(tree_priority_queue)) {
-        return NULL;
-    }
-    while (size(tree_priority_queue) > 1) {
-        binary_tree_t *leaf1 = priority_queue_dequeue(tree_priority_queue)->data;
-        binary_tree_t *leaf2 = priority_queue_dequeue(tree_priority_queue)->data;
-
-        symbol_frequency_t *symbol_frequency1 = (symbol_frequency_t*) leaf1->data;
-        symbol_frequency_t *symbol_frequency2 = (symbol_frequency_t*) leaf2->data;
-
-        symbol_frequency_t *parent_symbol_frequency = create_symbol_frequency(
-                INTERNAL_NODE_CHAR,
-                symbol_frequency1->frequency + symbol_frequency2->frequency
-        );
-        binary_tree_t *parent_tree = binary_tree_create(parent_symbol_frequency, leaf1, leaf2);
-
-        priority_queue_enqueue(tree_priority_queue, parent_tree, parent_symbol_frequency->frequency, ASC);
-    }
-    return priority_queue_dequeue(tree_priority_queue)->data;
-}
-
-hashtable_t* make_symbol_bits_map(binary_tree_t *symbol_frequency_tree)
-{
-    hashtable_t *hashtable = hashtable_create(ASCII_TABLE_SIZE, sizeof(int));
-
-    void block(unsigned char symbol, char *bit_path) {
-        hashtable_put(hashtable, symbol, bit_path);
-    }
-
-    find_bit_paths(symbol_frequency_tree, ROOT, NULL, block);
-    return hashtable;
-}
-
-queue_t* create_leaves_priority_queue(hashtable_t *symbol_frequency_map)
+queue_t* make_leaves_priority_queue(hashtable_t *symbol_frequency_map)
 {
     if (symbol_frequency_map == NULL) {
         return NULL;
@@ -89,6 +49,44 @@ queue_t* create_leaves_priority_queue(hashtable_t *symbol_frequency_map)
 
     hashtable_iterate(symbol_frequency_map, block);
     return priority_queue;
+}
+
+binary_tree_t* make_symbol_frequency_tree(queue_t *leaves_priority_queue)
+{
+    if (leaves_priority_queue == NULL || queue_is_empty(leaves_priority_queue)) {
+        return NULL;
+    }
+    while (size(leaves_priority_queue) > 1) {
+        binary_tree_t *leaf1 = priority_queue_dequeue(leaves_priority_queue)->data;
+        binary_tree_t *leaf2 = priority_queue_dequeue(leaves_priority_queue)->data;
+
+        symbol_frequency_t *symbol_frequency1 = (symbol_frequency_t*) leaf1->data;
+        symbol_frequency_t *symbol_frequency2 = (symbol_frequency_t*) leaf2->data;
+
+        symbol_frequency_t *parent_symbol_frequency = create_symbol_frequency(
+                INTERNAL_NODE_CHAR,
+                symbol_frequency1->frequency + symbol_frequency2->frequency
+        );
+        binary_tree_t *parent_tree = binary_tree_create(parent_symbol_frequency, leaf1, leaf2);
+
+        priority_queue_enqueue(leaves_priority_queue, parent_tree, parent_symbol_frequency->frequency, ASC);
+    }
+    return priority_queue_dequeue(leaves_priority_queue)->data;
+}
+
+hashtable_t* make_symbol_bits_map(binary_tree_t *symbol_frequency_tree)
+{
+    if (symbol_frequency_tree == NULL) {
+        return NULL;
+    }
+    hashtable_t *hashtable = hashtable_create(ASCII_TABLE_SIZE, sizeof(int));
+
+    void block(unsigned char symbol, char *bit_path) {
+        hashtable_put(hashtable, symbol, bit_path);
+    }
+
+    find_bit_paths(symbol_frequency_tree, ROOT, NULL, block);
+    return hashtable;
 }
 
 symbol_frequency_t* create_symbol_frequency(unsigned char symbol, int frequency)
