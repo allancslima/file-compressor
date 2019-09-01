@@ -6,8 +6,6 @@
 
 typedef enum binary_tree_direction { ROOT, LEFT, RIGHT } BINARY_TREE_DIRECTION;
 
-hashtable_t* create_symbol_frequency_map(FILE *file);
-
 queue_t* create_leaves_priority_queue(hashtable_t *symbol_frequency_map);
 
 symbol_frequency_t* create_symbol_frequency(unsigned char symbol, int frequency);
@@ -16,12 +14,28 @@ void find_bit_paths(
         binary_tree_t *symbol_frequency_tree,
         BINARY_TREE_DIRECTION direction,
         char *traversal_bits,
-        void (*block)(char symbol, char *bit_path)
+        void (*block)(unsigned char symbol, char *bit_path)
 );
 
-binary_tree_t* make_symbol_frequency_tree(FILE *file)
+hashtable_t* make_symbol_frequency_map(char *file_path)
 {
-    hashtable_t *symbol_frequency_map = create_symbol_frequency_map(file);
+    FILE *file = fopen(file_path, "rb");
+
+    if (file == NULL) {
+        return NULL;
+    }
+    hashtable_t *hashtable = hashtable_create(ASCII_TABLE_SIZE, sizeof(int));
+    unsigned char c;
+    int sum = 1;
+
+    while (fscanf(file, "%c", &c) != EOF) {
+        hashtable_put(hashtable, c, &sum);
+    }
+    return hashtable;
+}
+
+binary_tree_t* make_symbol_frequency_tree(hashtable_t *symbol_frequency_map)
+{
     queue_t *tree_priority_queue = create_leaves_priority_queue(symbol_frequency_map);
 
     if (queue_is_empty(tree_priority_queue)) {
@@ -47,25 +61,13 @@ binary_tree_t* make_symbol_frequency_tree(FILE *file)
 
 hashtable_t* make_symbol_bits_map(binary_tree_t *symbol_frequency_tree)
 {
-    void block(char symbol, char *bit_path) {
-        printf("%c -> %s\n", symbol, bit_path);
+    hashtable_t *hashtable = hashtable_create(ASCII_TABLE_SIZE, sizeof(int));
+
+    void block(unsigned char symbol, char *bit_path) {
+        hashtable_put(hashtable, symbol, bit_path);
     }
 
     find_bit_paths(symbol_frequency_tree, ROOT, NULL, block);
-}
-
-hashtable_t* create_symbol_frequency_map(FILE *file)
-{
-    if (file == NULL) {
-        return NULL;
-    }
-    hashtable_t *hashtable = hashtable_create(ASCII_TABLE_SIZE, sizeof(int));
-    unsigned char c;
-    int sum = 1;
-
-    while (fscanf(file, "%c", &c) != EOF) {
-        hashtable_put(hashtable, c, &sum);
-    }
     return hashtable;
 }
 
@@ -102,7 +104,7 @@ void find_bit_paths(
         binary_tree_t *symbol_frequency_tree,
         BINARY_TREE_DIRECTION direction,
         char *traversal_bits,
-        void (*block)(char symbol, char *bit_path)
+        void (*block)(unsigned char symbol, char *bit_path)
 )
 {
     if (direction == ROOT) {
@@ -117,7 +119,7 @@ void find_bit_paths(
         traversal_bits[new_length - 1] = '\0';
 
         if (binary_tree_is_leaf(symbol_frequency_tree)) {
-            char symbol = ((symbol_frequency_t*) symbol_frequency_tree->data)->symbol;
+            unsigned char symbol = ((symbol_frequency_t*) symbol_frequency_tree->data)->symbol;
             char *copy = (char*) malloc(sizeof(char) * (strlen(traversal_bits) + 1));
 
             strcpy(copy, traversal_bits);

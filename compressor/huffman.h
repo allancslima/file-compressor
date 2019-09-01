@@ -31,6 +31,8 @@ struct _symbol_bits {
     char *bits;
 };
 
+hashtable_t* make_symbol_frequency_map(char *file_path);
+
 /**
  * Makes a content characters frequency tree of the given file using the Huffman's coding algorithm.
  *
@@ -39,7 +41,7 @@ struct _symbol_bits {
  *
  * @see https://en.wikipedia.org/wiki/Huffman_coding#Compression
  */
-binary_tree_t* make_symbol_frequency_tree(FILE *file);
+binary_tree_t* make_symbol_frequency_tree(hashtable_t *symbol_frequency_map);
 
 hashtable_t* make_symbol_bits_map(binary_tree_t *symbol_frequency_tree);
 
