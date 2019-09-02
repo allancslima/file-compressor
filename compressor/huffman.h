@@ -28,7 +28,7 @@ struct _symbol_frequency {
 /**
  * Maps the frequency of each symbol of given file in a hashtable.
  *
- * @param file_path path to the file to be read.
+ * @param file string to file path.
  * @return pointer to {@link hashtable_t} or NULL if file does not exists.
  */
 hashtable_t* make_symbol_frequency_map(char *file_path);

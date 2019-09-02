@@ -17,16 +17,21 @@ void find_bit_paths(
 hashtable_t* make_symbol_frequency_map(char *file_path)
 {
     FILE *file = fopen(file_path, "rb");
-
     if (file == NULL) {
         return NULL;
     }
     hashtable_t *hashtable = hashtable_create(ASCII_TABLE_SIZE, sizeof(int));
     unsigned char c;
-    int sum = 1;
 
     while (fscanf(file, "%c", &c) != EOF) {
-        hashtable_put(hashtable, c, &sum);
+        void *value = hashtable_get(hashtable, c);
+        if (value == NULL) {
+            int *frequency = (int*) malloc(sizeof(int));
+            *frequency = 1;
+            hashtable_put(hashtable, c, frequency);
+        } else {
+            *((int*) value) += 1;
+        }
     }
     return hashtable;
 }
