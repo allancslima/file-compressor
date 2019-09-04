@@ -24,7 +24,7 @@ queue_t *queue_create();
  * @param data pointer that the node will to point.
  * @return pointer to {@link queue_node_t}.
  */
-queue_node_t *queuenode_create(void *data);
+queue_node_t *queue_node_create(void *data);
 
 /**
  * Puts data at end of the queue.
@@ -49,6 +49,14 @@ void* queue_dequeue(queue_t *queue);
  * @return 1 if has no data or 0 otherwise.
  */
 int queue_is_empty(queue_t *queue);
+
+/**
+ * Gets the number of elements enqueued.
+ *
+ * @param queue queue to do the operation.
+ * @return number of elements enqueued.
+ */
+int size(queue_t *queue);
 
 /**
  * Traverses the queue returning the data.
