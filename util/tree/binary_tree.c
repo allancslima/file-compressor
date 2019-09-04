@@ -25,21 +25,26 @@ int binary_tree_is_leaf(binary_tree_t *binary_tree)
     return binary_tree != NULL && binary_tree->left == NULL && binary_tree->right == NULL;
 }
 
-void binary_tree_in_order(binary_tree_t *binary_tree, void (*block)(void *data))
+void binary_tree_pre_order_1(binary_tree_t *binary_tree, void (*on_node)(void *data))
 {
     if (binary_tree != NULL) {
-        binary_tree_in_order(binary_tree->left, block);
-        block(binary_tree->data);
-        binary_tree_in_order(binary_tree->right, block);
+        on_node(binary_tree->data);
+        binary_tree_pre_order_1(binary_tree->left, on_node);
+        binary_tree_pre_order_1(binary_tree->right, on_node);
     }
 }
 
-void binary_tree_pre_order(binary_tree_t *binary_tree, void (*block)(void *data))
+void binary_tree_pre_order_2(
+        binary_tree_t *binary_tree,
+        void (*on_internal_node)(void *data),
+        void (*on_leaf)(void *data))
 {
-    if (binary_tree != NULL) {
-        block(binary_tree->data);
-        binary_tree_pre_order(binary_tree->left, block);
-        binary_tree_pre_order(binary_tree->right, block);
+    if (binary_tree_is_leaf(binary_tree)) {
+        on_leaf(binary_tree->data);
+    } else {
+        on_internal_node(binary_tree->data);
+        binary_tree_pre_order_2(binary_tree->left, on_internal_node, on_leaf);
+        binary_tree_pre_order_2(binary_tree->right, on_internal_node, on_leaf);
     }
 }
 

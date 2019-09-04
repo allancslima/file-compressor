@@ -42,20 +42,25 @@ int binary_tree_size(binary_tree_t *binary_tree);
 int binary_tree_is_leaf(binary_tree_t *binary_tree);
 
 /**
- * Traverses binary tree from a root in normal order.
+ * Traverses binary tree from a root in pre order.
  *
  * @param binary_tree pointer to a binary tree root.
- * @param block pointer to function that receives the data of the node tree.
+ * @param on_node pointer to function that receives the data of the tree nodes.
  */
-void binary_tree_in_order(binary_tree_t *binary_tree, void (*block)(void *data));
+void binary_tree_pre_order_1(binary_tree_t *binary_tree, void (*on_node)(void *data));
 
 /**
  * Traverses binary tree from a root in pre order.
  *
  * @param binary_tree pointer to a binary tree root.
- * @param block pointer to function that receives the data of the node tree.
+ * @param on_internal_node pointer to function that receives the data of the tree internal nodes.
+ * @param on_leaf pointer to function that receives the data of the tree leaf nodes.
  */
-void binary_tree_pre_order(binary_tree_t *binary_tree, void (*block)(void *data));
+void binary_tree_pre_order_2(
+        binary_tree_t *binary_tree,
+        void (*on_internal_node)(void *data),
+        void (*on_leaf)(void *data)
+);
 
 /**
  * Traverses binary tree from a root in post order.
