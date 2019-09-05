@@ -66,8 +66,8 @@ void binary_tree_pre_order_2(
  * Traverses binary tree from a root in post order.
  *
  * @param binary_tree pointer to a binary tree root.
- * @param block pointer to function that receives the data of the node tree.
+ * @param on_node pointer to function that receives the data of the node tree.
  */
-void binary_tree_post_order(binary_tree_t *binary_tree, void (*block)(void *data));
+void binary_tree_post_order(binary_tree_t *binary_tree, void (*on_node)(void *data));
 
 #endif

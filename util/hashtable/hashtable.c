@@ -45,13 +45,13 @@ int hashtable_contains_key(hashtable_t *hashtable, int key)
     return hashtable_get(hashtable, key) != NULL;
 }
 
-void hashtable_iterate(hashtable_t *hashtable, void (*block)(int key, void *value))
+void hashtable_iterate(hashtable_t *hashtable, void (*on_pair)(int key, void *value))
 {
     int i;
     for (i = 0; i < hashtable->capacity; i++) {
         void *value = hashtable_get(hashtable, i);
         if (value != NULL) {
-            block(i, value);
+            on_pair(i, value);
         }
     }
 }

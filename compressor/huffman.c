@@ -3,16 +3,35 @@
 #include <string.h>
 #include "huffman.h"
 
+/**
+ * Binary tree direction enumerator to use in creation of symbols bit path dictionary.
+ */
 typedef enum binary_tree_direction { ROOT, LEFT, RIGHT } BINARY_TREE_DIRECTION;
 
+/**
+ * Allocates memory to a symbol frequency struct.
+ *
+ * @param symbol character.
+ * @param frequency character frequency.
+ * @return pointer to {@link symbol_frequency_t}.
+ */
 symbol_frequency_t* create_symbol_frequency(unsigned char symbol, int frequency);
 
+/**
+ * Traverses binary tree in pre order returning the bit paths of leaves.
+ *
+ * @param symbol_frequency_tree pointer to root node of a symbol frequency tree.
+ * @param direction binary tree direction.
+ * @param traversal_bits string used to make the bit paths during traversal recursion. Must initially receive NULL.
+ * @param on_bit_path pointer to a function that receive the symbol and its respective bit path string.
+ */
 void find_bit_paths(
         binary_tree_t *symbol_frequency_tree,
         BINARY_TREE_DIRECTION direction,
         char *traversal_bits,
-        void (*block)(unsigned char symbol, char *bit_path)
+        void (*on_bit_path)(unsigned char symbol, char *bit_path)
 );
+
 
 hashtable_t* make_symbol_frequency_map(char *file_path)
 {
@@ -61,7 +80,7 @@ binary_tree_t* make_symbol_frequency_tree(queue_t *leaves_priority_queue)
     if (leaves_priority_queue == NULL || queue_is_empty(leaves_priority_queue)) {
         return NULL;
     }
-    while (size(leaves_priority_queue) > 1) {
+    while (queue_size(leaves_priority_queue) > 1) {
         binary_tree_t *leaf1 = priority_queue_dequeue(leaves_priority_queue)->data;
         binary_tree_t *leaf2 = priority_queue_dequeue(leaves_priority_queue)->data;
 
@@ -84,7 +103,7 @@ hashtable_t* make_symbol_bits_map(binary_tree_t *symbol_frequency_tree)
     if (symbol_frequency_tree == NULL) {
         return NULL;
     }
-    hashtable_t *hashtable = hashtable_create(ASCII_TABLE_SIZE, sizeof(int));
+    hashtable_t *hashtable = hashtable_create(ASCII_TABLE_SIZE, sizeof(char*));
 
     void block(unsigned char symbol, char *bit_path) {
         hashtable_put(hashtable, symbol, bit_path);
@@ -93,6 +112,7 @@ hashtable_t* make_symbol_bits_map(binary_tree_t *symbol_frequency_tree)
     find_bit_paths(symbol_frequency_tree, ROOT, NULL, block);
     return hashtable;
 }
+
 
 symbol_frequency_t* create_symbol_frequency(unsigned char symbol, int frequency)
 {
@@ -107,14 +127,14 @@ void find_bit_paths(
         binary_tree_t *symbol_frequency_tree,
         BINARY_TREE_DIRECTION direction,
         char *traversal_bits,
-        void (*block)(unsigned char symbol, char *bit_path)
+        void (*on_bit_path)(unsigned char symbol, char *bit_path)
 )
 {
     if (direction == ROOT) {
         traversal_bits = (char*) malloc(sizeof(char));
         traversal_bits[0] = '\0';
-        find_bit_paths(symbol_frequency_tree->left, LEFT, traversal_bits, block);
-        find_bit_paths(symbol_frequency_tree->right, RIGHT, traversal_bits, block);
+        find_bit_paths(symbol_frequency_tree->left, LEFT, traversal_bits, on_bit_path);
+        find_bit_paths(symbol_frequency_tree->right, RIGHT, traversal_bits, on_bit_path);
     } else {
         int new_length = strlen(traversal_bits) + 2;
         traversal_bits = (char*) realloc(traversal_bits, sizeof(char) * new_length);
@@ -126,10 +146,10 @@ void find_bit_paths(
             char *copy = (char*) malloc(sizeof(char) * (strlen(traversal_bits) + 1));
 
             strcpy(copy, traversal_bits);
-            block(symbol, copy);
+            on_bit_path(symbol, copy);
         } else {
-            find_bit_paths(symbol_frequency_tree->left, LEFT, traversal_bits, block);
-            find_bit_paths(symbol_frequency_tree->right, RIGHT, traversal_bits, block);
+            find_bit_paths(symbol_frequency_tree->left, LEFT, traversal_bits, on_bit_path);
+            find_bit_paths(symbol_frequency_tree->right, RIGHT, traversal_bits, on_bit_path);
         }
         // Removing last character
         new_length = strlen(traversal_bits);
