@@ -67,19 +67,19 @@ void* queue_dequeue(queue_t *queue)
 
 int queue_is_empty(queue_t *queue)
 {
-    return size(queue) == 0;
+    return queue_size(queue) == 0;
 }
 
-int size(queue_t *queue)
+int queue_size(queue_t *queue)
 {
     return queue->size;
 }
 
-void queue_iterate(queue_t *queue, void (*block)(void *data))
+void queue_iterate(queue_t *queue, void (*on_item)(void *data))
 {
     queue_node_t *node = queue->head;
     while (node != NULL) {
-        block(node->data);
+        on_item(node->data);
         node = node->next;
     }
 }

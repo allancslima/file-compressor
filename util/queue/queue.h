@@ -56,14 +56,14 @@ int queue_is_empty(queue_t *queue);
  * @param queue queue to do the operation.
  * @return number of elements enqueued.
  */
-int size(queue_t *queue);
+int queue_size(queue_t *queue);
 
 /**
  * Traverses the queue returning the data.
  *
  * @param queue where to do the operation.
- * @param block pointer to function that receives the data of the queue.
+ * @param on_item pointer to function that receives the data of the queue.
  */
-void queue_iterate(queue_t *queue, void (*block)(void *data));
+void queue_iterate(queue_t *queue, void (*on_item)(void *data));
 
 #endif

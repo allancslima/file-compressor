@@ -5,9 +5,25 @@
 #include "huffman.h"
 #include "../util/bitwise/bitwise.h"
 
+/**
+ * Writes in a file the leaves of a binary tree traversed in pre order.
+ *
+ * @param write_in pointer to file.
+ * @param symbol_frequency_tree pointer to node root of symbol frequency tree.
+ * @return tree size in 2 bytes because 13 bits are needed.
+ */
 short write_pre_order_tree(FILE *write_in, binary_tree_t *symbol_frequency_tree);
 
+/**
+ * Writes in a file the mapped bytes of a symbol bits dictionary.
+ *
+ * @param write_in pointer to file.
+ * @param read_at_path path string of original file.
+ * @param symbol_bits_map symbol bits dictionary.
+ * @return trash size in 1 byte because 3 bits are needed.
+ */
 char write_body(FILE *write_in, char *read_at_path, hashtable_t *symbol_bits_map);
+
 
 int compress_file(char *file_path)
 {
@@ -29,8 +45,10 @@ int compress_file(char *file_path)
     fputc(first_byte, compressed_file);
     fputc(second_byte, compressed_file);
     fclose(compressed_file);
+
     return 1;
 }
+
 
 short write_pre_order_tree(FILE *write_in, binary_tree_t *symbol_frequency_tree)
 {
@@ -100,7 +118,7 @@ char write_body(FILE *write_in, char *read_at_path, hashtable_t *symbol_bits_map
 
 int main()
 {
-    char *path = "image.jpg";
+    char *path = "test.txt";
     compress_file(path);
 
     return 0;

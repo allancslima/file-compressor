@@ -40,8 +40,8 @@ queue_node_t* priority_queue_dequeue(queue_t *queue);
  * Traverses the queue returning the data and the priority.
  *
  * @param queue where to do the operation.
- * @param block pointer to function that receives the data and the priority of the queue node.
+ * @param on_item pointer to function that receives the data and the priority of the queue node.
  */
-void priority_queue_iterate(queue_t *queue, void (*block)(void *data, int priority));
+void priority_queue_iterate(queue_t *queue, void (*on_item)(void *data, int priority));
 
 #endif

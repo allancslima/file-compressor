@@ -56,6 +56,6 @@ int hashtable_contains_key(hashtable_t *hashtable, int key);
  * @param hashtable where to do the operation.
  * @param block pointer to function that receives the existent keys with their associated values.
  */
-void hashtable_iterate(hashtable_t *hashtable, void (*block)(int key, void *value));
+void hashtable_iterate(hashtable_t *hashtable, void (*on_pair)(int key, void *value));
 
 #endif
