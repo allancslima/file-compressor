@@ -45,7 +45,7 @@ binary_tree_t* make_tree_from_pre_order_string(unsigned char *string, short *i, 
 
 hashtable_t* make_symbol_frequency_map(char *file_path)
 {
-    FILE *file = fopen(file_path, "rb");
+    FILE *file = fopen(file_path, "r");
     if (file == NULL) {
         return NULL;
     }

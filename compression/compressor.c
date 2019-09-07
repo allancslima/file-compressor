@@ -77,7 +77,7 @@ short write_pre_order_tree(FILE *write_in, binary_tree_t *symbol_frequency_tree)
 
 char write_body(FILE *write_in, char *read_at_path, hashtable_t *symbol_bits_map)
 {
-    FILE *read_at = fopen(read_at_path, "rb");
+    FILE *read_at = fopen(read_at_path, "r");
     unsigned char c;
     unsigned char bits[9] = "\0";
     char bits_count = 0;
