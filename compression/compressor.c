@@ -97,7 +97,7 @@ char write_body(FILE *write_in, char *read_at_path, hashtable_t *symbol_bits_map
             }
         }
     }
-    char trash_size;
+    char trash_size = 0;
     char bits_len = strlen(bits);
 
     if (bits_len > 0) {
@@ -109,17 +109,7 @@ char write_body(FILE *write_in, char *read_at_path, hashtable_t *symbol_bits_map
         }
         bits[bits_len] = '\0';
         fputc(bits_to_byte(bits), write_in);
-    } else {
-        trash_size = 0;
     }
     fclose(read_at);
     return trash_size;
-}
-
-int main()
-{
-    char *path = "test.txt";
-    compress_file(path);
-
-    return 0;
 }
