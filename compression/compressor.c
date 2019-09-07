@@ -63,8 +63,8 @@ short write_pre_order_tree(FILE *write_in, binary_tree_t *symbol_frequency_tree)
     void on_leaf(void *data) {
         unsigned char c = *((char*) data);
 
-        if (c == '*' || c == '\\') {
-            fputc('\\', write_in);
+        if (c == INTERNAL_NODE_SYMBOL || c == SCAPE_SYMBOL) {
+            fputc(SCAPE_SYMBOL, write_in);
             tree_size++;
         }
         fputc(c, write_in);

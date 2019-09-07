@@ -10,7 +10,11 @@
 /**
  * Character used to represent parent binary tree of two leafs in the Huffman's coding algorithm.
  */
-#define INTERNAL_NODE_CHAR '*'
+#define INTERNAL_NODE_SYMBOL '*'
+/**
+ * Character used to scape the internal node symbol and itself symbol on leaves.
+ */
+#define SCAPE_SYMBOL '\\'
 
 /**
  * Frequency node alias.
@@ -57,5 +61,13 @@ binary_tree_t* make_symbol_frequency_tree(queue_t *leaves_priority_queue);
  * @return pointer to {@link hashtable_t} or NULL if function input is NULL.
  */
 hashtable_t* make_symbol_bits_map(binary_tree_t *symbol_frequency_tree);
+
+/**
+ * Converts a pre order string to a binary tree.
+ *
+ * @param string pointer to pre order string.
+ * @return pointer to root node of binary tree.
+ */
+binary_tree_t* tree_from_pre_order_string(unsigned char *string);
 
 #endif
