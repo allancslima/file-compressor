@@ -10,4 +10,4 @@ BINARY_TREE = util/tree/binary_tree.c
 BITWISE = util/bitwise/bitwise.c
 
 compile_tree:
-	gcc main.c -o compressor.out $(COMPRESSOR) $(DECOMPRESSOR) $(HUFFMAN) $(HASHTABLE) $(PRIORITY_QUEUE) $(QUEUE) $(BINARY_TREE) $(BITWISE)
+	gcc main.c -o file-compressor.out $(COMPRESSOR) $(DECOMPRESSOR) $(HUFFMAN) $(HASHTABLE) $(PRIORITY_QUEUE) $(QUEUE) $(BINARY_TREE) $(BITWISE)
