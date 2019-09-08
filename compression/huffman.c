@@ -62,16 +62,17 @@ queue_t* make_leaves_priority_queue(hashtable_t *symbol_frequency_map)
     }
     queue_t *priority_queue = queue_create();
 
-    void block(int key, void *value) {
+    void on_pair(int key, void *value)
+    {
         unsigned char symbol = key;
-        int priority = *((int*) value);
-        symbol_frequency_t *symbol_frequency = create_symbol_frequency(symbol, priority);
+        int frequency = *((int*) value);
+        symbol_frequency_t *symbol_frequency = create_symbol_frequency(symbol, frequency);
         binary_tree_t *leaf = binary_tree_create(symbol_frequency, NULL, NULL);
 
-        priority_queue_enqueue(priority_queue, leaf, priority, ASC);
+        priority_queue_enqueue(priority_queue, leaf, frequency, ASC);
     }
 
-    hashtable_iterate(symbol_frequency_map, block);
+    hashtable_iterate(symbol_frequency_map, on_pair);
     return priority_queue;
 }
 
@@ -105,11 +106,12 @@ hashtable_t* make_symbol_bits_map(binary_tree_t *symbol_frequency_tree)
     }
     hashtable_t *hashtable = hashtable_create(ASCII_TABLE_SIZE, sizeof(char*));
 
-    void block(unsigned char symbol, char *bit_path) {
+    void on_bit_path(unsigned char symbol, char *bit_path)
+    {
         hashtable_put(hashtable, symbol, bit_path);
     }
 
-    find_bit_paths(symbol_frequency_tree, ROOT, NULL, block);
+    find_bit_paths(symbol_frequency_tree, ROOT, NULL, on_bit_path);
     return hashtable;
 }
 

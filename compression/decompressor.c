@@ -21,7 +21,7 @@ char get_trash_size(char *file_path);
 short get_tree_size(char *file_path);
 
 
-int decompress_file(char *file_path)
+void decompress_file(char *file_path, char *output_path)
 {
     FILE *compressed_file = fopen(file_path, "r");
     short tree_size = get_tree_size(file_path);
@@ -35,7 +35,7 @@ int decompress_file(char *file_path)
     rewind(compressed_file);
     fseek(compressed_file, 2 + tree_size, SEEK_SET);
 
-    FILE *decompressed_file = fopen("decompressed", "w+");
+    FILE *decompressed_file = fopen(output_path, "w+");
     binary_tree_t *aux_tree = symbol_tree;
     char trash_size = get_trash_size(file_path);
     unsigned char c;
@@ -57,7 +57,7 @@ int decompress_file(char *file_path)
             }
         }
     }
-    return 1;
+    binary_tree_free(symbol_tree);
 }
 
 

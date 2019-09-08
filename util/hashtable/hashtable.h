@@ -58,4 +58,10 @@ int hashtable_contains_key(hashtable_t *hashtable, int key);
  */
 void hashtable_iterate(hashtable_t *hashtable, void (*on_pair)(int key, void *value));
 
+/**
+ * Deallocate the whole struct from memory.
+ * @param hashtable hashtable.
+ */
+void hashtable_free(hashtable_t *hashtable);
+
 #endif

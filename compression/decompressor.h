@@ -1,6 +1,6 @@
 #ifndef DECOMPRESSOR_H
 #define DECOMPRESSOR_H
 
-int decompress_file(char *file_path);
+void decompress_file(char *file_path, char *output_path);
 
 #endif

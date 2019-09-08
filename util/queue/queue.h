@@ -66,4 +66,10 @@ int queue_size(queue_t *queue);
  */
 void queue_iterate(queue_t *queue, void (*on_item)(void *data));
 
+/**
+ * Deallocate the whole struct from memory.
+ * @param queue queue.
+ */
+void queue_free(queue_t *queue);
+
 #endif

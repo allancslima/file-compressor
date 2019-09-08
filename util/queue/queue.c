@@ -83,3 +83,14 @@ void queue_iterate(queue_t *queue, void (*on_item)(void *data))
         node = node->next;
     }
 }
+
+void queue_free(queue_t *queue)
+{
+    void on_item(void *data)
+    {
+        free(data);
+    }
+
+    queue_iterate(queue, on_item);
+    free(queue);
+}

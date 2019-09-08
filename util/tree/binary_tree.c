@@ -48,11 +48,12 @@ void binary_tree_pre_order_2(
     }
 }
 
-void binary_tree_post_order(binary_tree_t *binary_tree, void (*on_node)(void *data))
+void binary_tree_free(binary_tree_t *binary_tree)
 {
     if (binary_tree != NULL) {
-        binary_tree_post_order(binary_tree->left, on_node);
-        binary_tree_post_order(binary_tree->right, on_node);
-        on_node(binary_tree->data);
+        binary_tree_free(binary_tree->left);
+        binary_tree_free(binary_tree->right);
+        free(binary_tree->data);
+        free(binary_tree);
     }
 }

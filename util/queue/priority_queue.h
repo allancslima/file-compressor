@@ -44,4 +44,10 @@ queue_node_t* priority_queue_dequeue(queue_t *queue);
  */
 void priority_queue_iterate(queue_t *queue, void (*on_item)(void *data, int priority));
 
+/**
+ * Deallocate the whole struct from memory.
+ * @param queue queue.
+ */
+void priority_queue_free(queue_t *queue);
+
 #endif
