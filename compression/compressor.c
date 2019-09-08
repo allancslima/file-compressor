@@ -63,8 +63,8 @@ short write_pre_order_tree(FILE *write_in, binary_tree_t *symbol_frequency_tree)
     void on_leaf(void *data) {
         unsigned char c = *((char*) data);
 
-        if (c == '*' || c == '\\') {
-            fputc('\\', write_in);
+        if (c == INTERNAL_NODE_SYMBOL || c == SCAPE_SYMBOL) {
+            fputc(SCAPE_SYMBOL, write_in);
             tree_size++;
         }
         fputc(c, write_in);
@@ -77,7 +77,7 @@ short write_pre_order_tree(FILE *write_in, binary_tree_t *symbol_frequency_tree)
 
 char write_body(FILE *write_in, char *read_at_path, hashtable_t *symbol_bits_map)
 {
-    FILE *read_at = fopen(read_at_path, "rb");
+    FILE *read_at = fopen(read_at_path, "r");
     unsigned char c;
     unsigned char bits[9] = "\0";
     char bits_count = 0;
@@ -97,7 +97,7 @@ char write_body(FILE *write_in, char *read_at_path, hashtable_t *symbol_bits_map
             }
         }
     }
-    char trash_size;
+    char trash_size = 0;
     char bits_len = strlen(bits);
 
     if (bits_len > 0) {
@@ -109,17 +109,7 @@ char write_body(FILE *write_in, char *read_at_path, hashtable_t *symbol_bits_map
         }
         bits[bits_len] = '\0';
         fputc(bits_to_byte(bits), write_in);
-    } else {
-        trash_size = 0;
     }
     fclose(read_at);
     return trash_size;
-}
-
-int main()
-{
-    char *path = "test.txt";
-    compress_file(path);
-
-    return 0;
 }

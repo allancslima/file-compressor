@@ -35,7 +35,7 @@ void find_bit_paths(
 
 hashtable_t* make_symbol_frequency_map(char *file_path)
 {
-    FILE *file = fopen(file_path, "rb");
+    FILE *file = fopen(file_path, "r");
     if (file == NULL) {
         return NULL;
     }
@@ -88,7 +88,7 @@ binary_tree_t* make_symbol_frequency_tree(queue_t *leaves_priority_queue)
         symbol_frequency_t *symbol_frequency2 = (symbol_frequency_t*) leaf2->data;
 
         symbol_frequency_t *parent_symbol_frequency = create_symbol_frequency(
-                INTERNAL_NODE_CHAR,
+                INTERNAL_NODE_SYMBOL,
                 symbol_frequency1->frequency + symbol_frequency2->frequency
         );
         binary_tree_t *parent_tree = binary_tree_create(parent_symbol_frequency, leaf1, leaf2);
@@ -111,6 +111,31 @@ hashtable_t* make_symbol_bits_map(binary_tree_t *symbol_frequency_tree)
 
     find_bit_paths(symbol_frequency_tree, ROOT, NULL, block);
     return hashtable;
+}
+
+binary_tree_t* tree_from_pre_order_file(FILE *file, int file_offset, short tree_size)
+{
+    if (ftell(file) - file_offset >= tree_size) {
+        return NULL;
+    }
+    unsigned char symbol = fgetc(file);
+    unsigned char *symbol_copy = (unsigned char*) malloc(sizeof(char));
+    *symbol_copy = symbol;
+
+    binary_tree_t *node = NULL;
+
+    if (symbol == INTERNAL_NODE_SYMBOL) {
+        node = binary_tree_create(symbol_copy, NULL, NULL);
+        node->left = tree_from_pre_order_file(file, file_offset, tree_size);
+        node->right = tree_from_pre_order_file(file, file_offset, tree_size);
+    } else {
+        if (symbol == SCAPE_SYMBOL) {
+            symbol = fgetc(file);
+            *symbol_copy = symbol;
+        }
+        node = binary_tree_create(symbol_copy, NULL, NULL);
+    }
+    return node;
 }
 
 
