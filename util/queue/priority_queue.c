@@ -78,6 +78,19 @@ void priority_queue_iterate(queue_t *queue, void (*on_item)(void *data, int prio
     }
 }
 
+void priority_queue_free(queue_t *queue)
+{
+    queue_node_t *head = queue->head;
+
+    while (head != NULL) {
+        free(head->data);
+        queue_node_t *previous = head;
+        head = head->next;
+        free(previous);
+    }
+    free(queue);
+}
+
 
 int should_take_place(queue_node_t *node1, queue_node_t *node2, ORDER order)
 {

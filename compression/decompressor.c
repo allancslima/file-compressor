@@ -57,6 +57,7 @@ int decompress_file(char *file_path)
             }
         }
     }
+    binary_tree_free(symbol_tree);
     return 1;
 }
 

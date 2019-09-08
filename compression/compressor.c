@@ -31,8 +31,11 @@ int compress_file(char *file_path)
     queue_t *leaves_priority_queue = make_leaves_priority_queue(symbol_frequency_map);
     binary_tree_t *symbol_frequency_tree = make_symbol_frequency_tree(leaves_priority_queue);
     hashtable_t *symbol_bits_map = make_symbol_bits_map(symbol_frequency_tree);
-    FILE *compressed_file = fopen("compressed.huff", "w+");
 
+    hashtable_free(symbol_frequency_map);
+    priority_queue_free(leaves_priority_queue);
+
+    FILE *compressed_file = fopen("compressed.huff", "w+");
     fputc(0, compressed_file);
     fputc(0, compressed_file);
 
@@ -45,6 +48,9 @@ int compress_file(char *file_path)
     fputc(first_byte, compressed_file);
     fputc(second_byte, compressed_file);
     fclose(compressed_file);
+
+    binary_tree_free(symbol_frequency_tree);
+    hashtable_free(symbol_bits_map);
 
     return 1;
 }

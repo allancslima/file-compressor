@@ -55,3 +55,13 @@ void hashtable_iterate(hashtable_t *hashtable, void (*on_pair)(int key, void *va
         }
     }
 }
+
+void hashtable_free(hashtable_t *hashtable)
+{
+    int i;
+    for (i = 0; i < hashtable->capacity; i++) {
+        hashtable_remove(hashtable, i);
+    }
+    free(hashtable->table);
+    free(hashtable);
+}
