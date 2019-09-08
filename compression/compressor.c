@@ -5,6 +5,8 @@
 #include "huffman.h"
 #include "../util/bitwise/bitwise.h"
 
+#define SUFFIX_HUFF ".huff"
+
 /**
  * Writes in a file the leaves of a binary tree traversed in pre order.
  *
@@ -18,14 +20,14 @@ short write_pre_order_tree(FILE *write_in, binary_tree_t *symbol_frequency_tree)
  * Writes in a file the mapped bytes of a symbol bits dictionary.
  *
  * @param write_in pointer to file.
- * @param read_at_path path string of original file.
+ * @param original_file_path original file path.
  * @param symbol_bits_map symbol bits dictionary.
  * @return trash size in 1 byte because 3 bits are needed.
  */
-char write_body(FILE *write_in, char *read_at_path, hashtable_t *symbol_bits_map);
+char write_body(FILE *write_in, char *original_file_path, hashtable_t *symbol_bits_map);
 
 
-int compress_file(char *file_path)
+void compress_file(char *file_path, char *output_path)
 {
     hashtable_t *symbol_frequency_map = make_symbol_frequency_map(file_path);
     queue_t *leaves_priority_queue = make_leaves_priority_queue(symbol_frequency_map);
@@ -35,7 +37,7 @@ int compress_file(char *file_path)
     hashtable_free(symbol_frequency_map);
     priority_queue_free(leaves_priority_queue);
 
-    FILE *compressed_file = fopen("compressed.huff", "w+");
+    FILE *compressed_file = fopen(strcat(output_path, SUFFIX_HUFF), "w+");
     fputc(0, compressed_file);
     fputc(0, compressed_file);
 
@@ -51,8 +53,6 @@ int compress_file(char *file_path)
 
     binary_tree_free(symbol_frequency_tree);
     hashtable_free(symbol_bits_map);
-
-    return 1;
 }
 
 
@@ -81,14 +81,14 @@ short write_pre_order_tree(FILE *write_in, binary_tree_t *symbol_frequency_tree)
     return tree_size;
 }
 
-char write_body(FILE *write_in, char *read_at_path, hashtable_t *symbol_bits_map)
+char write_body(FILE *write_in, char *original_file_path, hashtable_t *symbol_bits_map)
 {
-    FILE *read_at = fopen(read_at_path, "r");
+    FILE *original_file = fopen(original_file_path, "r");
     unsigned char c;
     unsigned char bits[9] = "\0";
     char bits_count = 0;
 
-    while (fscanf(read_at, "%c", &c) != EOF) {
+    while (fscanf(original_file, "%c", &c) != EOF) {
         char *bit_path = hashtable_get(symbol_bits_map, c);
         int i;
 
@@ -116,6 +116,6 @@ char write_body(FILE *write_in, char *read_at_path, hashtable_t *symbol_bits_map
         bits[bits_len] = '\0';
         fputc(bits_to_byte(bits), write_in);
     }
-    fclose(read_at);
+    fclose(original_file);
     return trash_size;
 }

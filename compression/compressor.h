@@ -1,6 +1,6 @@
 #ifndef COMPRESSOR_H
 #define COMPRESSOR_H
 
-int compress_file(char *file_path);
+void compress_file(char *file_path, char *output_path);
 
 #endif
