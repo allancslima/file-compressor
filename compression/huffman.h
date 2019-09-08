@@ -63,11 +63,13 @@ binary_tree_t* make_symbol_frequency_tree(queue_t *leaves_priority_queue);
 hashtable_t* make_symbol_bits_map(binary_tree_t *symbol_frequency_tree);
 
 /**
- * Converts a pre order string to a binary tree.
+ * Converts pre order tree characters of a file to a binary tree.
  *
- * @param string pointer to pre order string.
+ * @param file pointer to file at beginning of pre order tree.
+ * @param file_offset offset size until pre order tree beginning.
+ * @param tree_size quantity of bytes to read.
  * @return pointer to root node of binary tree.
  */
-binary_tree_t* tree_from_pre_order_string(unsigned char *string);
+binary_tree_t* tree_from_pre_order_file(FILE *file, int file_offset, short tree_size);
 
 #endif
