@@ -11,7 +11,7 @@ BITWISE = util/bitwise/bitwise.c
 
 file_compressor:
 	mkdir -p output/
-	gcc main.c -o file-compressor.out $(COMPRESSOR) $(DECOMPRESSOR) $(HUFFMAN) $(HASHTABLE) $(PRIORITY_QUEUE) $(QUEUE) $(BINARY_TREE) $(BITWISE)
+	gcc main.c -o output/file-compressor.out $(COMPRESSOR) $(DECOMPRESSOR) $(HUFFMAN) $(HASHTABLE) $(PRIORITY_QUEUE) $(QUEUE) $(BINARY_TREE) $(BITWISE)
 
 tests:
 	mkdir -p output/
