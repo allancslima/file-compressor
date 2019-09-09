@@ -28,9 +28,6 @@ void hashtable_put(hashtable_t *hashtable, int key, void *value)
 
 void* hashtable_get(hashtable_t *hashtable, int key)
 {
-    if (hashtable->table[key] == NULL) {
-        return NULL;
-    }
     return hashtable->table[key];
 }
 
