@@ -51,6 +51,20 @@ void should_enqueue_last_with_bigger_priority_to_equals_priorities()
     CU_ASSERT_EQUAL(priority_queue_dequeue(queue)->data, first);
 }
 
+void should_increment_size_on_enqueue()
+{
+    queue_t *queue = queue_create();
+    char *first = "First\0";
+    char *second = "Second\0";
+    char *third = "Third\0";
+
+    priority_queue_enqueue(queue, third, 3, DESC);
+    priority_queue_enqueue(queue, first, 1, DESC);
+    priority_queue_enqueue(queue, second, 2, DESC);
+
+    CU_ASSERT_EQUAL(queue_size(queue), 3);
+}
+
 void should_be_empty_after_dequeue_all()
 {
     queue_t *queue = queue_create();
@@ -66,6 +80,32 @@ void should_be_empty_after_dequeue_all()
     priority_queue_dequeue(queue);
 
     CU_ASSERT(queue_is_empty(queue));
+}
+
+void should_decrement_size_on_dequeue()
+{
+    queue_t *queue = queue_create();
+    char *first = "First\0";
+    char *second = "Second\0";
+    char *third = "Third\0";
+
+    priority_queue_enqueue(queue, third, 3, DESC);
+    priority_queue_enqueue(queue, first, 1, DESC);
+    priority_queue_enqueue(queue, second, 2, DESC);
+    priority_queue_dequeue(queue);
+    priority_queue_dequeue(queue);
+    priority_queue_dequeue(queue);
+
+    CU_ASSERT_EQUAL(queue_size(queue), 0);
+}
+
+void should_not_decrement_size_on_dequeue_empty_queue()
+{
+    queue_t *queue = queue_create();
+
+    priority_queue_dequeue(queue);
+
+    CU_ASSERT_EQUAL(queue_size(queue), 0);
 }
 
 void should_return_NULL_on_dequeue_empty_queue()
@@ -109,7 +149,20 @@ int main()
         CU_cleanup_registry();
         return CU_get_error();
     }
+    if (CU_add_test(pSuite, "Increment size on enqueue", should_increment_size_on_enqueue) == NULL) {
+        CU_cleanup_registry();
+        return CU_get_error();
+    }
     if (CU_add_test(pSuite, "Empty queue", should_be_empty_after_dequeue_all) == NULL) {
+        CU_cleanup_registry();
+        return CU_get_error();
+    }
+    if (CU_add_test(pSuite, "Decrement size on dequeue", should_decrement_size_on_dequeue) == NULL) {
+        CU_cleanup_registry();
+        return CU_get_error();
+    }
+    if (CU_add_test(pSuite, "Don't decrement size on dequeue empty queue",
+            should_not_decrement_size_on_dequeue_empty_queue) == NULL) {
         CU_cleanup_registry();
         return CU_get_error();
     }
