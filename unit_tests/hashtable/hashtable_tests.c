@@ -3,8 +3,6 @@
 #include "CUnit/Basic.h"
 #include "../../util/hashtable/hashtable.h"
 
-hashtable_t *hashtable;
-
 void should_put_key_value_pair()
 {
     hashtable_t *hashtable = hashtable_create(5, sizeof(char*));
