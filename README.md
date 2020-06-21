@@ -1,6 +1,6 @@
 # File compressor
 
-This file compressor is based on the Huffman's coding algorithm and was built with the follow data structures:
+This file compressor is based on the Huffman's coding algorithm, built with the following data structures:
 
 * Hash Table
 * Priority Queue
@@ -10,7 +10,7 @@ This file compressor is based on the Huffman's coding algorithm and was built wi
 
 `make file-compressor`
 
-The program is compiled at `/output`.
+Compiled at `/output`.
 
 ## Compress
 
@@ -26,13 +26,14 @@ To decompress a compressed file:
 
 ## Unit tests
 
+This project contains unit tests for the data structures only.
+
 First, compile the tests:
 
 `make tests`
 
-The tests are compiled separately by data structure at `/output`.
+They are compiled separately by data structure at `/output`.
 
-Then run the tests of a data structure like:
+Then run a test like:
 
 `./output/binary_tree_tests.out`
-
